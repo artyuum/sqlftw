@@ -9,6 +9,7 @@
 
 namespace SqlFtw\Analyzer;
 
+use SqlFtw\Analyzer\Context\AnalyzerContext;
 use SqlFtw\Sql\Statement;
 
 interface SimpleRule extends AnalyzerRule
@@ -17,6 +18,6 @@ interface SimpleRule extends AnalyzerRule
     /**
      * @return list<AnalyzerResult>
      */
-    public function process(Statement $statement, SimpleContext $context, int $flags): array;
+    public function process(Statement $statement, AnalyzerContext $context, int $flags): array;
 
 }

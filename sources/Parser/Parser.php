@@ -12,10 +12,10 @@
 namespace SqlFtw\Parser;
 
 use Generator;
+use SqlFtw\Analyzer\Context\AnalyzerContext;
 use SqlFtw\Analyzer\Rules\Charset\CharsetAndCollationCompatibilityRule;
 use SqlFtw\Analyzer\Rules\Variables\SystemVariablesTypeRule;
 use SqlFtw\Analyzer\SimpleAnalyzer;
-use SqlFtw\Analyzer\SimpleContext;
 use SqlFtw\Resolver\ExpressionResolver;
 use SqlFtw\Session\Session;
 use SqlFtw\Session\SessionUpdater;
@@ -65,7 +65,7 @@ class Parser
         $this->lexer = $lexer ?? new Lexer($session);
         $this->factory = new ParserFactory($this, $session, $this->sessionUpdater);
 
-        $context = new SimpleContext($session, $resolver);
+        $context = new AnalyzerContext($session, $resolver);
         // always executed rules (errors not as obvious as syntax error, but preventing command execution anyway)
         $this->analyzer = new SimpleAnalyzer($context, [
             new SystemVariablesTypeRule(),

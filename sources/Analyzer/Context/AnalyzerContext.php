@@ -7,7 +7,7 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace SqlFtw\Analyzer;
+namespace SqlFtw\Analyzer\Context;
 
 use SqlFtw\Analyzer\Types\CastingTypeChecker;
 use SqlFtw\Platform\Platform;
@@ -17,7 +17,7 @@ use SqlFtw\Session\Session;
 /**
  * Basic tool set for rules which do not need knowledge of database schema or previous statements history
  */
-class SimpleContext
+class AnalyzerContext
 {
 
     private Session $session;

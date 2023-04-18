@@ -33,7 +33,7 @@ class ClientSideExtension
     // "DELIMITER ;;" (mysql client syntax to tell him how to chop input into batches before sending it to server)
     public const ALLOW_DELIMITER_DEFINITION = 1;
 
-    // "UPDATE tbl1 SET a = ? WHERE b = ?" (Doctrine, Laravel, NDB, Dibi)
+    // "UPDATE tbl1 SET a = ? WHERE b = ?" (Doctrine, Laravel, NDB, Dibi; valid operator in PostgreSQL)
     public const ALLOW_QUESTION_MARK_PLACEHOLDERS_OUTSIDE_PREPARED_STATEMENTS = 2;
 
     // "UPDATE tbl1 SET a = ?1 WHERE b = ?2" (Doctrine)

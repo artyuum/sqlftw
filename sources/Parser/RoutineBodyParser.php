@@ -447,7 +447,10 @@ class RoutineBodyParser
             $condition = $this->expressionParser->parseExpression($tokenList);
             $tokenList->expectKeyword(Keyword::WHEN);
         }
-        $formatter = new Formatter($tokenList->getSession());
+        $session = $tokenList->getSession();
+        $normalizer = $session->getNormalizer();
+        $normalizer->quoteAllNames(false);
+        $formatter = new Formatter($session, $normalizer);
         $values = [];
         /** @var non-empty-list<list<Statement>> $statementLists */
         $statementLists = [];

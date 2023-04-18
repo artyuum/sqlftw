@@ -97,7 +97,9 @@ class MysqlTestJob
         $session = new Session($platform, ClientSideExtension::ALLOW_DELIMITER_DEFINITION);
         $lexer = new Lexer($session, true, true);
         $parser = new Parser($session, $lexer);
-        $formatter = new Formatter($session);
+        $normalizer = $session->getNormalizer();
+        $normalizer->quoteAllNames(false);
+        $formatter = new Formatter($session, $normalizer);
 
         $start = microtime(true);
         $statements = 0;

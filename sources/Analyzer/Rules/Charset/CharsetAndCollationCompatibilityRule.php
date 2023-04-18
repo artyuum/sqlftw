@@ -10,7 +10,7 @@
 namespace SqlFtw\Analyzer\Rules\Charset;
 
 use SqlFtw\Analyzer\AnalyzerResult;
-use SqlFtw\Analyzer\SimpleContext;
+use SqlFtw\Analyzer\Context\AnalyzerContext;
 use SqlFtw\Analyzer\SimpleRule;
 use SqlFtw\Sql\Charset;
 use SqlFtw\Sql\Collation;
@@ -32,7 +32,7 @@ class CharsetAndCollationCompatibilityRule implements SimpleRule
     /**
      * @return list<AnalyzerResult>
      */
-    public function process(Statement $statement, SimpleContext $context, int $flags): array
+    public function process(Statement $statement, AnalyzerContext $context, int $flags): array
     {
         if ($statement instanceof CreateSchemaCommand || $statement instanceof AlterSchemaCommand) {
             return $this->processSchema($statement, $context);
@@ -47,7 +47,7 @@ class CharsetAndCollationCompatibilityRule implements SimpleRule
      * @param CreateSchemaCommand|AlterSchemaCommand $command
      * @return list<AnalyzerResult>
      */
-    private function processSchema(SchemaCommand $command, SimpleContext $context): array
+    private function processSchema(SchemaCommand $command, AnalyzerContext $context): array
     {
         $results = [];
         $options = $command->getOptions();
@@ -64,7 +64,7 @@ class CharsetAndCollationCompatibilityRule implements SimpleRule
      * @param CreateTableCommand|AlterTableCommand $command
      * @return list<AnalyzerResult>
      */
-    private function processTable(TableCommand $command, SimpleContext $context): array
+    private function processTable(TableCommand $command, AnalyzerContext $context): array
     {
         $results = [];
         $options = $command->getOptionsList();

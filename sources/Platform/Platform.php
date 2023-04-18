@@ -13,7 +13,11 @@ use LogicException;
 use SqlFtw\Platform\Features\Feature;
 use SqlFtw\Platform\Features\FeaturesList;
 use SqlFtw\Platform\Features\MysqlFeatures;
+use SqlFtw\Platform\Naming\MysqlNamingStrategy;
 use SqlFtw\Platform\Naming\NamingStrategy;
+use SqlFtw\Platform\Normalizer\MysqlNormalizer;
+use SqlFtw\Platform\Normalizer\Normalizer;
+use SqlFtw\Session\Session;
 use SqlFtw\Sql\Command;
 use SqlFtw\Sql\EntityType;
 use SqlFtw\Sql\Expression\BaseType;
@@ -29,7 +33,6 @@ use function in_array;
 use function is_string;
 use function ltrim;
 use function strtoupper;
-use function ucfirst;
 
 class Platform
 {
@@ -280,10 +283,22 @@ class Platform
 
     public function getNamingStrategy(): NamingStrategy
     {
-        /** @var class-string<NamingStrategy> $class */
-        $class = 'SqlFtw\\Platform\\Naming\\NamingStrategy' . ucfirst($this->name);
+        switch($this->name) {
+            case self::MYSQL:
+                return new MysqlNamingStrategy();
+            default:
+                throw new LogicException("Naming strategy for platform {$this->name} is not implemented.");
+        }
+    }
 
-        return new $class();
+    public function getNormalizer(Session $session): Normalizer
+    {
+        switch($this->name) {
+            case self::MYSQL:
+                return new MysqlNormalizer($session);
+            default:
+                throw new LogicException("Normalizer for platform {$this->name} is not implemented.");
+        }
     }
 
     // features --------------------------------------------------------------------------------------------------------

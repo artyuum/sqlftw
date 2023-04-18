@@ -94,7 +94,9 @@ class MysqlTest
         $platform = Platform::fromTag(Platform::MYSQL, $tag);
         $version = $platform->getVersion()->format();
         $session = new Session($platform, ClientSideExtension::ALLOW_DELIMITER_DEFINITION);
-        $formatter = new Formatter($session);
+        $normalizer = $session->getNormalizer();
+        $normalizer->quoteAllNames(false);
+        $formatter = new Formatter($session, $normalizer);
         $renderer = new ResultRenderer($this->mysqlTestsDir, $singleThread, $fullRun, $formatter);
 
         if ($singleThread) {

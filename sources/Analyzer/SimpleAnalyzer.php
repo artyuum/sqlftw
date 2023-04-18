@@ -9,12 +9,13 @@
 
 namespace SqlFtw\Analyzer;
 
+use SqlFtw\Analyzer\Context\AnalyzerContext;
 use SqlFtw\Sql\Statement;
 
 class SimpleAnalyzer
 {
 
-    private SimpleContext $context;
+    private AnalyzerContext $context;
 
     /** @var non-empty-list<SimpleRule> */
     private array $rules;
@@ -22,7 +23,7 @@ class SimpleAnalyzer
     /**
      * @param non-empty-list<SimpleRule> $rules
      */
-    public function __construct(SimpleContext $context, array $rules)
+    public function __construct(AnalyzerContext $context, array $rules)
     {
         $this->context = $context;
         $this->rules = $rules;

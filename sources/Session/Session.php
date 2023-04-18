@@ -9,6 +9,7 @@
 
 namespace SqlFtw\Session;
 
+use SqlFtw\Platform\Normalizer\Normalizer;
 use SqlFtw\Platform\Platform;
 use SqlFtw\Sql\Charset;
 use SqlFtw\Sql\Collation;
@@ -88,6 +89,11 @@ class Session
     public function getPlatform(): Platform
     {
         return $this->platform;
+    }
+
+    public function getNormalizer(): Normalizer
+    {
+        return $this->platform->getNormalizer($this);
     }
 
     public function getClientSideExtensions(): int

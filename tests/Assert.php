@@ -118,7 +118,10 @@ class Assert extends DogmaAssert
         }
 
         $parser = ParserHelper::createParser(null, $version);
-        $formatter = new Formatter($parser->getSession());
+        $session = $parser->getSession();
+        $normalizer = $session->getNormalizer();
+        $normalizer->quoteAllNames(false);
+        $formatter = new Formatter($session, $normalizer);
 
         $results = iterator_to_array($parser->parse($query));
         if (count($results) > 1) {

@@ -11,7 +11,7 @@ namespace SqlFtw\Analyzer\Rules\Variables;
 
 use SqlFtw\Analyzer\AnalyzerResult;
 use SqlFtw\Analyzer\AnalyzerResultSeverity;
-use SqlFtw\Analyzer\SimpleContext;
+use SqlFtw\Analyzer\Context\AnalyzerContext;
 use SqlFtw\Analyzer\SimpleRule;
 use SqlFtw\Formatter\Formatter;
 use SqlFtw\Sql\Dal\Set\SetVariablesCommand;
@@ -43,7 +43,7 @@ class SystemVariablesTypeRule implements SimpleRule
     /**
      * @return list<AnalyzerResult>
      */
-    public function process(Statement $statement, SimpleContext $context, int $flags): array
+    public function process(Statement $statement, AnalyzerContext $context, int $flags): array
     {
         if ($statement instanceof SetVariablesCommand) {
             return $this->processSet($statement, $context);
@@ -55,7 +55,7 @@ class SystemVariablesTypeRule implements SimpleRule
     /**
      * @return list<AnalyzerResult>
      */
-    private function processSet(SetVariablesCommand $command, SimpleContext $context): array
+    private function processSet(SetVariablesCommand $command, AnalyzerContext $context): array
     {
         $mode = $context->getSession()->getMode();
         $strict = $mode->containsAny(SqlMode::STRICT_ALL_TABLES);
@@ -111,7 +111,10 @@ class SystemVariablesTypeRule implements SimpleRule
             if ($value instanceof ExpressionNode && !$value instanceof Value) {
                 // not resolved
                 // todo: insert real static type analysis here : ]
-                $formatter = new Formatter($context->getSession());
+                $session = $context->getSession();
+                $normalizer = $session->getNormalizer();
+                $normalizer->quoteAllNames(false);
+                $formatter = new Formatter($session, $normalizer);
                 $expressionString = str_replace("\n", "", $expression->serialize($formatter));
                 $expressionType = get_class($expression);
                 $message = "System variable {$name} assignment with expression \"{$expressionString}\" ({$expressionType}) was not checked.";
